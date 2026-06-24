@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../utils/jwt');
 const userRepository = require('../repositories/user.repository');
 require('dotenv').config();
 
@@ -31,11 +31,7 @@ const loginUser = async (email, password) => {
     throw new Error('Invalid email or password');
   }
 
-  const token = jwt.sign(
-    { id: user.id, role: user.role, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: '1d' }
-  );
+  const token = generateToken(user);
 
   const { password: _, ...userWithoutPassword } = user;
   return { user: userWithoutPassword, token };
