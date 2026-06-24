@@ -10,7 +10,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
-// Routes will be mounted here
-// app.use('/api', routes);
+const authRoutes = require('./routes/auth.routes');
+const employeeRoutes = require('./routes/employee.routes');
+const reimbursementRoutes = require('./routes/reimbursement.routes');
+
+app.use('/auth', authRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/reimbursements', reimbursementRoutes);
 
 module.exports = app;
