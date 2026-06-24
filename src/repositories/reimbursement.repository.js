@@ -19,6 +19,11 @@ const getAllReimbursements = async () => {
   return result;
 };
 
+const getReimbursementById = async (id) => {
+  const result = await db.select().from(reimbursements).where(eq(reimbursements.id, id)).limit(1);
+  return result[0];
+};
+
 const updateReimbursementStatus = async (id, status) => {
   const result = await db.update(reimbursements)
     .set(typeof status === 'string' ? { finalStatus: status } : status)
@@ -31,5 +36,6 @@ module.exports = {
   createReimbursement,
   getReimbursementsByEmployee,
   getAllReimbursements,
+  getReimbursementById,
   updateReimbursementStatus,
 };
