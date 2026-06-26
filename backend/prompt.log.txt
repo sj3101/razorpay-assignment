@@ -248,3 +248,297 @@ At the end provide:
 2. Exact command to apply migration.
 3. Expected tables and enums that should appear in Supabase after migration succeeds.
 
+Create the database integration layer for the existing backend project using:
+
+Node.js
+Express.js
+PostgreSQL (Supabase)
+Drizzle ORM
+JavaScript only (NO TypeScript)
+
+Current setup already includes:
+
+Drizzle schema
+Migration system
+Supabase PostgreSQL connection
+
+Tasks:
+
+Create a clean database abstraction layer inside:
+src/db/
+Implement:
+db client initialization using Drizzle
+reusable query wrapper functions (CRUD helpers)
+safe parameterized query handling
+Create a repository pattern structure:
+src/db/repositories/
+
+for:
+
+users repository
+employee_manager repository
+reimbursements repository
+Each repository must include:
+create
+findById
+findAll
+update
+delete
+Ensure all queries use Drizzle ORM only (no raw SQL unless necessary).
+Add error handling wrapper for DB operations.
+
+Output:
+
+Folder structure
+All file contents
+Explanation of repository pattern usage
+
+Do NOT generate:
+
+controllers
+routes
+auth logic
+middleware
+
+
+Build the service layer for the backend using MVC architecture.
+
+Tasks:
+
+Create service layer inside:
+src/services/
+Implement services for:
+UserService
+AuthService (logic only, no routes)
+ReimbursementService
+ManagerService
+Each service should:
+Use repository layer only (no direct DB access)
+Contain business logic only
+Handle validation rules
+Handle role-based rules internally
+Implement key business rules:
+EMP can only create reimbursement
+RM can approve/reject first level
+APE can approve/reject second level
+CFO has full access
+Add reusable helper functions:
+password hashing logic wrapper
+token generation wrapper (JWT)
+status transition validation
+
+Output:
+
+Full service layer code
+Flow diagram (text-based)
+File structure update
+
+Do NOT generate:
+
+routes
+controllers
+middleware
+
+
+Create the controller layer for the backend.
+
+Tasks:
+
+Create controllers inside:
+src/controllers/
+Implement:
+authController
+userController
+reimbursementController
+managerController
+Each controller must:
+Call service layer only
+Never directly access DB
+Handle request/response only
+Return consistent JSON format
+Standard response format:
+{
+  "success": true,
+  "message": "",
+  "data": {}
+}
+Add:
+input validation (basic manual validation, no external libraries unless necessary)
+error handling middleware hooks (but not middleware itself)
+
+Output:
+
+Full controller code
+API response structure
+Folder mapping
+
+Do NOT generate:
+
+routes
+middleware
+services
+DB Layer
+
+
+Create Express routing layer for the backend.
+
+Tasks:
+
+Create routes inside:
+src/routes/
+Implement:
+auth.routes.js
+user.routes.js
+reimbursement.routes.js
+manager.routes.js
+Connect:
+routes → controllers only
+Define REST API endpoints:
+
+Auth:
+
+POST /auth/register
+POST /auth/login
+POST /auth/logout
+
+Users:
+
+GET /users
+GET /users/:id
+
+Reimbursements:
+
+POST /reimbursements
+GET /reimbursements
+PATCH /reimbursements/:id
+
+Manager:
+
+POST /manager/assign
+PATCH approval endpoints
+Setup:
+/api/v1
+
+base prefix
+
+Setup centralized route loader in app.js
+
+Output:
+
+Full routing system
+Express route structure
+Endpoint list
+
+Do NOT generate:
+
+controllers logic
+services
+Middleware
+
+
+Implement authentication system using:
+
+JWT
+bcrypt
+HTTP-only cookies
+Express.js
+PostgreSQL (users table)
+
+Tasks:
+
+Implement AuthService logic:
+register user
+login user
+logout user
+Password handling:
+bcrypt hashing
+password comparison
+JWT:
+access token generation
+token verification middleware
+Cookies:
+HTTP-only cookie storage
+secure flag handling
+Roles supported:
+EMP
+RM
+APE
+CFO
+Add token expiry handling
+
+Output:
+
+Full auth implementation
+Security explanation
+Flow diagram (login/register lifecycle)
+
+Do NOT generate:
+
+routes (only logic layer)
+controllers (if already done, just connect)
+DB schemas
+
+
+Create middleware system for backend security.
+
+Tasks:
+
+Create middleware inside:
+src/middlewares/
+Implement:
+authMiddleware (JWT verification)
+roleMiddleware (RBAC system)
+errorHandler middleware
+requestLogger middleware
+Role-based access control:
+EMP → limited access
+RM → approval rights
+APE → second approval
+CFO → full access
+Add protection for all sensitive routes
+Ensure middleware is reusable and modular
+
+Output:
+
+Full middleware code
+RBAC logic explanation
+Middleware flow diagram
+
+Do NOT generate:
+
+controllers
+services
+Routes
+
+
+Integrate full backend system and prepare for production readiness.
+
+Tasks:
+
+Connect:
+routes
+controllers
+services
+middleware
+DB layer
+Ensure:
+app.js central bootstrap is clean
+server.js starts correctly on port 7002
+Add:
+basic logging system
+error handling standardization
+API response consistency
+Create test checklist:
+auth flow
+reimbursement flow
+role flow
+Provide:
+full final folder structure
+startup instructions
+environment setup guide
+
+Output:
+
+Complete working backend architecture
+Run instructions
+Final system overview
