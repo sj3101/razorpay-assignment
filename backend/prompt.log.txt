@@ -1,0 +1,250 @@
+Create the initial project setup for a backend assignment using:
+
+* Node.js
+* Express.js
+* PostgreSQL (Supabase)
+* Drizzle ORM
+* JWT Authentication
+* HTTP-only Cookies
+* bcrypt
+
+Tech Constraints:
+
+* JavaScript only (NO TypeScript)
+* Express.js
+* PostgreSQL hosted on Supabase
+* Drizzle ORM
+* MVC architecture
+
+Required Architecture:
+
+src/
+├── controllers/
+├── services/
+├── routes/
+├── middlewares/
+├── config/
+├── db/
+│   ├── schema/
+│   ├── migrations/
+│   └── seed/
+├── utils/
+├── app.js
+└── server.js
+
+Tasks:
+
+1. Initialize package.json.
+
+2. Install and configure all required dependencies:
+
+   * express
+   * cors
+   * dotenv
+   * cookie-parser
+   * bcrypt
+   * jsonwebtoken
+   * drizzle-orm
+   * drizzle-kit
+   * pg
+   * nodemon
+
+3. Configure package.json scripts exactly as:
+
+"dev"
+"db:migrate"
+"db:seed-data"
+
+4. Configure Express application:
+
+   * JSON middleware
+   * cookie-parser
+   * cors
+   * environment variables
+   * centralized app bootstrap
+
+5. Configure server startup:
+
+   * Must run on port 7002
+   * Read PORT from environment but default to 7002
+
+6. Configure Supabase PostgreSQL connection using Drizzle ORM.
+
+7. Create:
+
+   * drizzle.config.js
+   * database connection file
+   * .env.example
+
+8. Create Drizzle schemas for:
+
+   * users
+   * employee_manager
+   * reimbursements
+
+Requirements:
+
+* Use UUID primary keys.
+* Use PostgreSQL enums for roles and reimbursement statuses.
+* Add createdAt and updatedAt timestamps where appropriate.
+* Define foreign key relationships.
+
+9. Create migration setup so that:
+
+npm run db:migrate
+
+creates all required tables.
+
+10. Create a seed script so that:
+
+npm run db:seed-data
+
+creates exactly one CFO account:
+
+email: [cfo@org.com](mailto:cfo@org.com)
+password: CFO#ORG@April2026
+role: CFO
+
+Hash the password using bcrypt.
+
+11. Do NOT use Supabase Auth.
+    Authentication will later be implemented using:
+
+* Users table
+* bcrypt
+* JWT
+* HTTP-only cookies
+
+12. Do NOT generate:
+
+* Controllers implementation
+* Routes implementation
+* Middleware implementation
+* Auth logic
+* Business logic
+* Reimbursement workflows
+
+Only generate project setup, database configuration, schemas, migration setup, and CFO seed setup.
+
+After creating everything, provide the final folder structure and list every file created.
+
+The project setup is already complete.
+
+Current stack:
+
+* Node.js
+* Express.js
+* PostgreSQL (Supabase)
+* Drizzle ORM
+* JavaScript
+
+Your task is ONLY to implement the database layer.
+
+Requirements:
+
+Create PostgreSQL enums:
+
+1. role_enum
+
+   * EMP
+   * RM
+   * APE
+   * CFO
+
+2. approval_status_enum
+
+   * PENDING
+   * APPROVED
+   * REJECTED
+
+Create the following Drizzle schemas:
+
+1. users
+
+---
+
+Fields:
+
+* id (UUID primary key)
+* name
+* email (unique)
+* password
+* role (role_enum)
+* createdAt
+* updatedAt
+
+Constraints:
+
+* email must be unique
+* role defaults to EMP
+
+2. employee_manager
+
+---
+
+Fields:
+
+* id (UUID primary key)
+* employeeId (FK -> users.id)
+* managerId (FK -> users.id)
+* createdAt
+
+Constraints:
+
+* employeeId must be unique
+* employeeId and managerId cannot be the same user
+
+Business Rule:
+
+* Every employee reports to exactly one RM
+
+3. reimbursements
+
+---
+
+Fields:
+
+* id (UUID primary key)
+* employeeId (FK -> users.id)
+* title
+* description
+* amount (numeric/decimal)
+* rmApproval (approval_status_enum)
+* apeApproval (approval_status_enum)
+* finalStatus (approval_status_enum)
+* createdAt
+* updatedAt
+
+Defaults:
+
+* rmApproval = PENDING
+* apeApproval = PENDING
+* finalStatus = PENDING
+
+Requirements:
+
+1. Generate complete Drizzle schema files.
+2. Generate table relationships.
+3. Generate migration files.
+4. Generate commands required to create migrations.
+5. Generate commands required to run migrations.
+6. Verify that the schema is compatible with Supabase PostgreSQL.
+7. Show the final folder structure after schema creation.
+
+Do NOT generate:
+
+* Controllers
+* Routes
+* Middleware
+* Services
+* Authentication
+* Seed logic
+
+Focus only on schema design and migration setup.
+
+At the end provide:
+
+1. Exact command to generate migration.
+2. Exact command to apply migration.
+3. Expected tables and enums that should appear in Supabase after migration succeeds.
+
