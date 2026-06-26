@@ -1,0 +1,169 @@
+Create a complete frontend for a Reimbursement Management System using only:
+
+HTML
+CSS
+Vanilla JavaScript (NO frameworks)
+
+The frontend must integrate with a backend API running at:
+
+http://localhost:7002
+
+CORE FUNCTIONAL REQUIREMENTS
+
+Build a single-page application (SPA-like behavior) with two views:
+
+1. Authentication View
+Login form
+Register form
+Tab switching between login/register
+Error display section
+Register fields:
+name
+email
+password
+role (EMP, RM, APE, CFO)
+Login fields:
+email
+password
+2. Dashboard View (after login)
+
+Must include:
+
+A. Navbar
+App name: "ReimburseApp"
+User greeting: "Welcome, {name} ({role})"
+Logout button
+B. Submit Reimbursement Form
+
+Fields:
+
+title
+amount
+description (optional)
+
+API:
+
+POST /reimbursements
+C. Reimbursement List Section
+
+Display all reimbursements of current user:
+
+API:
+
+GET /reimbursements/my
+
+Each card must show:
+
+title
+amount
+description
+RM approval status
+APE approval status
+final status
+id
+created date
+
+Use color-coded badges:
+
+pending (yellow)
+approved (green)
+rejected (red)
+D. Manager Panel (conditional UI)
+
+Show ONLY if user role is:
+
+RM
+APE
+CFO
+
+Contains:
+
+reimbursement ID input
+status dropdown (APPROVED / REJECTED)
+submit button
+
+API:
+
+PATCH /reimbursements/:id/status
+
+JAVASCRIPT REQUIREMENTS
+
+Create a single file:
+
+app.js
+
+Must include:
+
+1. State Management
+currentUser object
+auth state handling
+2. API Handler Function
+fetch wrapper
+supports credentials (cookies)
+JSON handling
+error handling
+3. Auth System
+login
+register
+auto-login after register
+/auth/me session check
+logout (UI-only or backend optional)
+4. UI Logic
+switch between login/register tabs
+show/hide dashboard
+render reimbursements dynamically
+conditional rendering based on role
+5. Reimbursement Logic
+submit reimbursement
+fetch user reimbursements
+render cards dynamically
+update status (for managers)
+6. Initialization
+on page load:
+check authentication (/auth/me)
+if logged in → show dashboard
+else → show auth screen
+
+CSS REQUIREMENTS
+
+Create a modern UI with:
+
+Design Style:
+Dark theme
+Glassmorphism effect
+Smooth animations
+Responsive layout
+Must include:
+CSS variables (colors)
+responsive grid dashboard
+card-based UI
+hover animations
+styled buttons
+styled forms
+badges for status
+
+FILE STRUCTURE OUTPUT
+
+Provide:
+
+frontend/
+├── index.html
+├── styles.css
+└── app.js
+
+CONSTRAINTS
+NO frameworks (React/Vue/Angular forbidden)
+NO external state libraries
+NO TypeScript
+Must be pure vanilla JS
+Must match backend API structure exactly
+
+
+FINAL OUTPUT REQUIREMENT
+
+After generating code, also provide:
+
+Explanation of UI flow
+API integration mapping
+Key features implemented
+Any assumptions made
