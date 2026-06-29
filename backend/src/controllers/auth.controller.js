@@ -34,8 +34,17 @@ const me = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  });
+  return res.status(200).json({ message: 'Logged out successfully' });
+};
+
 module.exports = {
   register,
   login,
   me,
+  logout,
 };

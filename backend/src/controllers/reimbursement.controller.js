@@ -1,5 +1,7 @@
 const reimbursementService = require('../services/reimbursement.service');
 
+const MANAGER_ROLES = ['RM', 'APE', 'CFO'];
+
 const createReimbursement = async (req, res) => {
   try {
     const reimbursement = await reimbursementService.createReimbursement(req.user.id, req.body);
@@ -11,7 +13,10 @@ const createReimbursement = async (req, res) => {
 
 const getMyReimbursements = async (req, res) => {
   try {
-    const reimbursements = await reimbursementService.getMyReimbursements(req.user.id);
+    const isManager = MANAGER_ROLES.includes(req.user.role);
+    const reimbursements = isManager
+      ? await reimbursementService.getAllReimbursements()
+      : await reimbursementService.getMyReimbursements(req.user.id);
     return res.status(200).json({ reimbursements });
   } catch (error) {
     return res.status(500).json({ error: error.message });

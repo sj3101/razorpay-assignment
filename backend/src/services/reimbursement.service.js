@@ -67,8 +67,13 @@ const updateApprovalFlow = async (id, role, status) => {
   return updated;
 };
 
+const getAllReimbursements = async () => {
+  return await reimbursementRepository.getAllReimbursements();
+};
+
 module.exports = {
   createReimbursement,
   getMyReimbursements,
+  getAllReimbursements,
   updateApprovalFlow,
 };
