@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:7002';
+const API_URL = ''; // Backend serves this frontend — same origin, no CORS needed
 
 // State
 let currentUser = null;
@@ -96,18 +96,15 @@ registerForm.addEventListener('submit', async (e) => {
     }
 });
 
-function logout() {
-    // In a real app, backend should clear cookie, but we can just reset state and let it fail on next check
-    // If backend doesn't have a logout route, we can just clear the cookie on the client side if not HttpOnly,
-    // but since it IS HttpOnly, we technically need a backend route. For this simple app, we'll just reload.
-    // However, since we can't delete HttpOnly cookies from JS, we just hide dashboard.
+async function logout() {
+    try {
+        await apiCall('/auth/logout', 'POST');
+    } catch (err) {
+        // Even if the request fails, clear local state
+        console.warn('Logout request failed, clearing local state anyway.');
+    }
     currentUser = null;
     showAuth();
-    
-    // To properly logout with HttpOnly, we would need a POST /auth/logout in backend.
-    // For now, this just hides the UI. If the user refreshes, they might still be logged in.
-    // We can simulate it by resetting the page (they will be auto logged in if token is valid).
-    alert('Logged out locally. If you refresh, you may still be logged in if the token is valid.');
 }
 
 // UI State
@@ -165,6 +162,11 @@ statusForm.addEventListener('submit', async (e) => {
 async function loadReimbursements() {
     try {
         const data = await apiCall('/reimbursements/my');
+        const isManager = currentUser && ['RM', 'APE', 'CFO'].includes(currentUser.role);
+        const heading = document.querySelector('.list-panel h2');
+        if (heading) {
+            heading.textContent = isManager ? 'All Reimbursements (Manager View)' : 'My Reimbursements';
+        }
         renderReimbursements(data.reimbursements || []);
     } catch (err) {
         console.error('Failed to load reimbursements', err);
